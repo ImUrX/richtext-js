@@ -1,0 +1,7 @@
+.text-error { 
+    text-decoration: red wavy underline;
+}
+
+.text-warning { 
+    text-decoration: orange wavy underline;
+}
