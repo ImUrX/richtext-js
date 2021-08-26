@@ -1,3 +1,4 @@
+import { rich } from "./language.js";
 import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
 
 window.onload = () => {
@@ -11,7 +12,7 @@ window.onload = () => {
     const lintButton = document.getElementById("lint-button");
 
     const view = new EditorView({
-        state: EditorState.create({ extensions: [basicSetup] }),
+        state: EditorState.create({ extensions: [basicSetup, rich()] }),
         parent: input
     });
 

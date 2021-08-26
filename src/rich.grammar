@@ -1,19 +1,43 @@
-@top Document { expression+ }
+@top Document { (expression space)* }
 
-expression { Text }
+expression { Text | Entity | MismatchedCloseTag | incompleteStartCloseTag }
+
+Entity {
+    OpenTag expression* (CloseTag | MissingCloseTag)
+}
+
+OpenTag[closedBy="CloseTag MissingCloseTag"] {
+    StartTag space* TagName space* (Attribute space*)* EndTag
+}
+
+CloseTag[openedBy=OpenTag] {
+    StartCloseTag space* TagName space* EndTag
+}
+
+MismatchedCloseTag {
+    mismatchedStartCloseTag space* TagName space* EndTag
+}
 
 Attribute {
-    AttributeName Is ( nameChar+ |  )
+    AttributeName space* Is space* AttributeValue
+}
+    
+AttributeValue {
+    unquotedValue | ("\"" chars* "\"")
+}
+
+@context entityContext from "./tokens.js"
+
+@external tokens startTag from "./tokens.js" {
+    StartTag[closedBy="EndTag"]
+    StartCloseTag
+    MissingCloseTag
+    mismatchedStartCloseTag[@name=StartCloseTag]
+    incompleteStartCloseTag[@name=StartCloseTag]
 }
 
 @tokens {
-    StartCloseTag[closedBy="EndTag"] { "</" }
-    StartTag[closedBy="EndTag"] { "<" }
-    EndTag { ">" }
-    space { std.whitespace+ }
-    doubleQuote[closedBy="doubleQuote"] { "\"" }
-    singleQuote[closedBy="singleQuote"] { "'" }
-    quote { singleQuote | doubleQuote }
+    EndTag[openedBy="StartTag StartCloseTag"] { ">" }
 
     nameStart {
         ":" | std.asciiLetter | "_" |
@@ -23,17 +47,18 @@ Attribute {
     nameChar {
         nameStart | "-" | "." | std.digit | $[\u00B7\u0300-\u036F\u203F-\u2040]
     }
+    relaxedChar {
+        nameChar | "#"
+    }
 
     identifier { nameStart nameChar* }
+    unquotedValue { relaxedChar+ }
     TagName { identifier }
     AttributeName { identifier }
     Is { "=" }
-    Text { ![\n]* }
-    String { quote Text quote }
+    Text { ![<]+ }
+    chars { ![\"] }
+    space { (" " | "\t" | "\r" | "\n")+ }
 }
 
-@skip { space } {
-    Tag {
-        StartTag TagName 
-    }
-}
+@detectDelim

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "watch": "rollup -w -c"
   },
   "repository": {
     "type": "git",
@@ -22,10 +23,14 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "@codemirror/autocomplete": "^0.19.2",
     "@codemirror/basic-setup": "^0.19.0",
+    "@codemirror/highlight": "^0.19.2",
+    "@codemirror/language": "^0.19.2",
     "@lezer/generator": "^0.15.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "eslint": "^7.32.0",
-    "rollup": "^2.56.2"
+    "rollup": "^2.56.2",
+    "rollup-plugin-command": "^1.1.3"
   }
 }
