@@ -1,5 +1,5 @@
 import { parser } from "./rich.js";
-import { LRLanguage, LanguageSupport } from "@codemirror/language";
+import { LRLanguage, LanguageSupport, foldInside, foldNodeProp, indentNodeProp } from "@codemirror/language";
 import { styleTags, tags as t } from "@codemirror/highlight";
 window.testings = parser;
 
@@ -13,6 +13,12 @@ export const richLanguage = LRLanguage.define({
                 TagName: t.tagName,
                 "MismatchedCloseTag/TagName": [t.tagName, t.invalid],
                 Is: t.definitionOperator
+            }),
+            indentNodeProp.add({
+                Document: () => 0
+            }),
+            foldNodeProp.add({
+                Entity: foldInside
             })
         ]
     })
