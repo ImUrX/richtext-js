@@ -7,7 +7,7 @@ Entity {
 }
 
 OpenTag[closedBy="CloseTag MissingCloseTag"] {
-    StartTag space* TagName space* (Attribute space*)* EndTag
+    StartTag space* TagName space* (Attribute space*)? EndTag
 }
 
 CloseTag[openedBy=OpenTag] {
@@ -19,7 +19,7 @@ MismatchedCloseTag {
 }
 
 Attribute {
-    AttributeName space* Is space* AttributeValue
+    Is space* AttributeValue
 }
     
 AttributeValue {
@@ -54,7 +54,6 @@ AttributeValue {
     identifier { nameStart nameChar* }
     unquotedValue { relaxedChar+ }
     TagName { identifier }
-    AttributeName { identifier }
     Is { "=" }
     Text { ![<]+ }
     chars { ![\"] }

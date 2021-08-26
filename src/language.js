@@ -12,7 +12,6 @@ export const richLanguage = LRLanguage.define({
                 "StartTag StartCloseTag EndTag": t.angleBracket,
                 TagName: t.tagName,
                 "MismatchedCloseTag/TagName": [t.tagName, t.invalid],
-                AttributeName: t.propertyName,
                 Is: t.definitionOperator
             })
         ]
