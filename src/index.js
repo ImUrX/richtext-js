@@ -32,8 +32,8 @@ window.onload = () => {
             switch(name) {
             case "color": {
                 const num = parseInt(attr.substring(1), 16);
-                if(!supportedColors.includes(attr) 
-                || (!(attr.length === 7 || attr.length === 9) || !attr.startsWith("#") || isNaN(num))
+                if(!(supportedColors.includes(attr) 
+                || ((attr.length === 7 || attr.length === 9) && attr.startsWith("#") && !isNaN(num)))
                 ) { //ugly
                     return escapeHTML(match);
                 }
