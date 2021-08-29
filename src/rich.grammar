@@ -48,7 +48,7 @@ AttributeValue {
         nameStart | "-" | "." | std.digit | $[\u00B7\u0300-\u036F\u203F-\u2040]
     }
     relaxedChar {
-        nameChar | "#"
+        nameChar | "#" | "%"
     }
     unquotedValue { relaxedChar+ }
     identifier {

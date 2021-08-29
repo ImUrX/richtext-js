@@ -6,6 +6,8 @@ const theme = EditorView.theme({
     ".cm-scroller": {overflow: "auto"}
 });
 
+const supportedColors = ["black", "blue", "green", "orange", "purple", "red", "white", "yellow"];
+
 window.onload = () => {
     /**
      * @type {HTMLDivElement}
@@ -23,11 +25,18 @@ window.onload = () => {
     });
 
     lintButton.addEventListener("click", () => {
-        const lines = [...view.state.doc].join("\n").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#-]+)(?:"|')?)?>/g, (match, name, attr) => {
+        console.log([...view.state.doc]);
+        const lines = [...view.state.doc].join("").replaceAll(/<noparse>(.+)<\/noparse>/g, (match, name) => {
+            return escapeHTML(name);
+        }).replace(/&/g, "&amp;").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#%-]+)(?:"|')?)?>/g, (match, name, attr) => {
             switch(name) {
             case "color": {
                 const num = parseInt(attr.substring(1), 16);
-                if(!(attr.length === 7 || attr.length === 9) || !attr.startsWith("#") || isNaN(num)) return escapeHTML(match);
+                if(!supportedColors.includes(attr) 
+                || (!(attr.length === 7 || attr.length === 9) || !attr.startsWith("#") || isNaN(num))
+                ) { //ugly
+                    return escapeHTML(match);
+                }
                 return `<span style="color: ${attr}">`;
             }
             case "alpha": {
@@ -40,6 +49,19 @@ window.onload = () => {
                 return `<span style="text-transform: ${name}">` + addIf(attr);
             case "smallcaps":
                 return "<span style=\"font-variant: small-caps\">" + addIf(attr);
+            case "align":
+                if(!["right", "left", "center", "justify"].includes(attr)) return escapeHTML(match);
+                return `<span style="text-align: ${attr}">`;
+            case "cspace":
+                if(checkUnits(["px", "em"], attr)) {
+                    return `<span style="letter-spacing: ${attr}">`;
+                }
+                return escapeHTML(match);
+            case "indent":
+                if(checkUnits(["px", "em", "%"], attr)) {
+                    return `<div style="margin-left: ${attr}">`;
+                }
+                return escapeHTML(match);
             case "u":
             case "b":
             case "i":
@@ -57,7 +79,11 @@ window.onload = () => {
             case "lowercase":
             case "uppercase":
             case "smallcaps":
+            case "align":
+            case "cspace":
                 return  "</span>";
+            case "indent":
+                return "</div>";
             case "b":
             case "i":
             case "s":
@@ -104,6 +130,13 @@ window.onload = () => {
         }*/
     });
 };
+
+function checkUnits(units, value) {
+    for(const unit of units) {
+        if(value.endsWith(unit) && !isNaN(value.slice(0, unit.length * -1))) return true;
+    }
+    return false;
+}
 
 function addIf(attr) {
     return attr ? `${attr}&gt;` : "";
