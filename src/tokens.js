@@ -26,9 +26,12 @@ function tagNameAfter(input, offset) {
     return cachedName = name || null;
 }
 
+export const optionalClose = ["pos", "voffset", "line-height"];
+
 function EntityContext(name, parent) {
     this.name = name;
     this.parent = parent;
+    this.optional = optionalClose.includes(name);
     this.hash = parent ? parent.hash : 0;
     for (let i = 0; i < name.length; i++) this.hash += (this.hash << 4) + name.charCodeAt(i) + (name.charCodeAt(i) << 8);
 }
@@ -58,7 +61,14 @@ export const startTag = new ExternalTokenizer((input, stack) => {
         let name = tagNameAfter(input, 0);
         if (!name) return input.acceptToken(incompleteStartCloseTag);
         if (stack.context && name == stack.context.name) return input.acceptToken(StartCloseTag);
-        for (let cx = stack.context; cx; cx = cx.parent) if (cx.name == name) return input.acceptToken(MissingCloseTag, -2);
+        let optional = true;
+        for (let cx = stack.context.parent; cx; cx = cx.parent) {
+            if (optional && !cx.optional) optional = false;
+            if (cx.name == name) {
+                if(optional) return input.acceptToken(StartCloseTag);
+                return input.acceptToken(MissingCloseTag, -2);
+            }
+        }
         input.acceptToken(mismatchedStartCloseTag);
     } else {
         return input.acceptToken(StartTag);

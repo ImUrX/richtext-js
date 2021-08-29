@@ -50,9 +50,10 @@ AttributeValue {
     relaxedChar {
         nameChar | "#"
     }
-
-    identifier { nameStart nameChar* }
     unquotedValue { relaxedChar+ }
+    identifier {
+        std.asciiLowercase (std.asciiLowercase | "-")*
+    }
     TagName { identifier }
     Is { "=" }
     Text { ![<]+ }

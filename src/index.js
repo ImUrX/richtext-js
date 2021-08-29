@@ -1,6 +1,11 @@
 import { rich } from "./language.js";
 import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
 
+const theme = EditorView.theme({
+    "&": {height: "40vh"},
+    ".cm-scroller": {overflow: "auto"}
+});
+
 window.onload = () => {
     /**
      * @type {HTMLDivElement}
@@ -12,12 +17,13 @@ window.onload = () => {
     const lintButton = document.getElementById("lint-button");
 
     const view = new EditorView({
-        state: EditorState.create({ extensions: [basicSetup, rich()] }),
+        state: EditorState.create({ extensions: [basicSetup, rich(), theme, EditorView.lineWrapping] }),
         parent: input
     });
 
     lintButton.addEventListener("click", () => {
-        const innerText = input.innerText;
+        const innerText = [...view.state.doc].join("\n");
+        /*
         const tags = [...innerText.matchAll(/<(\w+)(?:(=)?("|')?(\w+)?("|')?)?>/g)];
         const end = [...innerText.matchAll(/<\/(\w+)>/g)];
         for(const tag of tags) {
@@ -47,6 +53,21 @@ window.onload = () => {
                     copy.splice(index, 1);
                 }
             }
-        }
+        }*/
     });
 };
+
+function escapeHTML(unsafe) {
+    return unsafe.replace(/[&<"']/g, function(m) {
+        switch (m) {
+        case "&":
+            return "&amp;";
+        case "<":
+            return "&lt;";
+        case "\"":
+            return "&quot;";
+        default:
+            return "&#039;";
+        }
+    });
+}
