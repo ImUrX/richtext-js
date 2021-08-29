@@ -62,7 +62,7 @@ export const startTag = new ExternalTokenizer((input, stack) => {
         if (!name) return input.acceptToken(incompleteStartCloseTag);
         if (stack.context && name == stack.context.name) return input.acceptToken(StartCloseTag);
         let optional = true;
-        for (let cx = stack.context.parent; cx; cx = cx.parent) {
+        for (let cx = stack.context?.parent; cx; cx = cx.parent) {
             if (optional && !cx.optional) optional = false;
             if (cx.name == name) {
                 if(optional) return input.acceptToken(StartCloseTag);

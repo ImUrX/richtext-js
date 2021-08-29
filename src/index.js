@@ -15,6 +15,7 @@ window.onload = () => {
      * @type {HTMLButtonElement}
      */
     const lintButton = document.getElementById("lint-button");
+    const output = document.getElementById("output");
 
     const view = new EditorView({
         state: EditorState.create({ extensions: [basicSetup, rich(), theme, EditorView.lineWrapping] }),
@@ -22,7 +23,54 @@ window.onload = () => {
     });
 
     lintButton.addEventListener("click", () => {
-        const innerText = [...view.state.doc].join("\n");
+        const lines = [...view.state.doc].join("\n").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#-]+)(?:"|')?)?>/g, (match, name, attr) => {
+            switch(name) {
+            case "color": {
+                const num = parseInt(attr.substring(1), 16);
+                if(!(attr.length === 7 || attr.length === 9) || !attr.startsWith("#") || isNaN(num)) return escapeHTML(match);
+                return `<span style="color: ${attr}">`;
+            }
+            case "alpha": {
+                const num = parseInt(attr.substring(1), 16);
+                if(attr.length !== 3 || !attr.startsWith("#") || isNaN(num)) return escapeHTML(match);
+                return `<span style="opacity: ${(1/255) * num}">`;
+            }
+            case "uppercase":
+            case "lowercase":
+                return `<span style="text-transform: ${name}">` + addIf(attr);
+            case "smallcaps":
+                return "<span style=\"font-variant: small-caps\">" + addIf(attr);
+            case "u":
+            case "b":
+            case "i":
+            case "s":
+            case "sub":
+            case "sup":
+                return `<${name}>` + addIf(attr);
+            default:
+                return escapeHTML(match);
+            }
+        }).replaceAll(/<\/([\w-]+)>/g, (match, name) => {
+            switch(name) {
+            case "color":
+            case "alpha":
+            case "lowercase":
+            case "uppercase":
+            case "smallcaps":
+                return  "</span>";
+            case "b":
+            case "i":
+            case "s":
+            case "u":
+            case "sub":
+            case "sup":
+                return `</${name}>`;
+            default:
+                return escapeHTML(match);
+            }
+        }).replace(/\n/g, "<br>");
+
+        output.innerHTML = lines;
         /*
         const tags = [...innerText.matchAll(/<(\w+)(?:(=)?("|')?(\w+)?("|')?)?>/g)];
         const end = [...innerText.matchAll(/<\/(\w+)>/g)];
@@ -56,6 +104,10 @@ window.onload = () => {
         }*/
     });
 };
+
+function addIf(attr) {
+    return attr ? `${attr}&gt;` : "";
+}
 
 function escapeHTML(unsafe) {
     return unsafe.replace(/[&<"']/g, function(m) {
