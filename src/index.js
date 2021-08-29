@@ -1,10 +1,9 @@
 import { rich } from "./language.js";
 import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
+import { Compartment } from "@codemirror/state";
 
-const theme = EditorView.theme({
-    "&": {height: "40vh"},
-    ".cm-scroller": {overflow: "auto"}
-});
+
+const theme = new Compartment();
 
 const supportedColors = ["black", "blue", "green", "orange", "purple", "red", "white", "yellow"];
 
@@ -19,10 +18,36 @@ window.onload = () => {
     const lintButton = document.getElementById("lint-button");
     const output = document.getElementById("output");
 
+    const darkmode = matchMedia("(prefers-color-scheme: dark)");
+
     const view = new EditorView({
-        state: EditorState.create({ extensions: [basicSetup, rich(), theme, EditorView.lineWrapping] }),
+        state: EditorState.create({ extensions: [basicSetup, rich(), theme.of(EditorView.theme({
+            "&": {
+                height: "40vh",
+                backgroundColor: darkmode.matches ? "#24292e" : "inherit"
+            },
+            ".cm-scroller": {overflow: "auto"}
+        }, { dark: darkmode.matches })), EditorView.lineWrapping] }),
         parent: input
     });
+
+    const updateDarkMode = ev => {
+        view.dispatch({
+            effects: theme.reconfigure(theme.of(EditorView.theme({
+                "&": {
+                    height: "40vh",
+                    backgroundColor: ev.matches ? "#24292e" : "inherit"
+                },
+                ".cm-scroller": {overflow: "auto"}
+            }, { dark: ev.matches })))
+        });
+    };
+    if(darkmode.addEventListener) {
+        darkmode.addEventListener("change", updateDarkMode);
+    } else {
+        darkmode.addListener(updateDarkMode);
+    }
+    //https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList/onchange vs https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList/addListener
 
     lintButton.addEventListener("click", () => {
         console.log([...view.state.doc]);

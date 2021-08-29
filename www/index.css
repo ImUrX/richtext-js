@@ -6,6 +6,20 @@
     text-decoration: orange wavy underline;
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #404040;
+        color: white;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: white;
+        color: black;
+    }
+}
+
 u { 
     text-decoration: underline;
 }
