@@ -56,15 +56,16 @@ window.onload = () => {
         }).replace(/&/g, "&amp;").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#%-]+)(?:"|')?)?>/g, (match, name, attr) => {
             switch(name) {
             case "color": {
-                const num = parseInt(attr.substring(1), 16);
+
                 if(!attr || !(supportedColors.includes(attr) 
-                || ((attr.length === 7 || attr.length === 9) && attr.startsWith("#") && !isNaN(num)))
+                || ((attr.length === 7 || attr.length === 9) && attr.startsWith("#") && !isNaN(parseInt(attr.substring(1), 16))))
                 ) { //ugly
                     return escapeHTML(match);
                 }
                 return `<span style="color: ${attr}">`;
             }
             case "alpha": {
+                if(!attr) return escapeHTML(match);
                 const num = parseInt(attr.substring(1), 16);
                 if(attr.length !== 3 || !attr.startsWith("#") || isNaN(num)) return escapeHTML(match);
                 return `<span style="opacity: ${(1/255) * num}">`;
