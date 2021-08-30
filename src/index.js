@@ -57,7 +57,7 @@ window.onload = () => {
             switch(name) {
             case "color": {
                 const num = parseInt(attr.substring(1), 16);
-                if(!(supportedColors.includes(attr) 
+                if(!attr || !(supportedColors.includes(attr) 
                 || ((attr.length === 7 || attr.length === 9) && attr.startsWith("#") && !isNaN(num)))
                 ) { //ugly
                     return escapeHTML(match);
@@ -157,6 +157,7 @@ window.onload = () => {
 };
 
 function checkUnits(units, value) {
+    if(!value) return false;
     for(const unit of units) {
         if(value.endsWith(unit) && !isNaN(value.slice(0, unit.length * -1))) return true;
     }
