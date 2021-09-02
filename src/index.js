@@ -53,7 +53,7 @@ window.onload = () => {
         console.log([...view.state.doc]);
         const lines = [...view.state.doc].join("").replaceAll(/<noparse>(.+)<\/noparse>/g, (match, name) => {
             return escapeHTML(name);
-        }).replace(/&/g, "&amp;").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#%-]+)(?:"|')?)?>/g, (match, name, attr) => {
+        }).replace(/&/g, "&amp;").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#%+-]+)(?:"|')?)?>/g, (match, name, attr) => {
             switch(name) {
             case "color": {
 
@@ -94,7 +94,7 @@ window.onload = () => {
                     const num = parseFloat(attr) + parseFloat(defaultSize.replace(/[^-\d.]/g, ""));
                     return `<span style="font-size: ${num}${defaultSize.replace(/[-\d.]/g, "")}">`;
                 } else if(checkUnits(["px", "em", "%"], attr)) {
-                    return `<span style="font size: ${attr}">`;
+                    return `<span style="font-size: ${attr}">`;
                 }
                 return escapeHTML(match);
             case "u":
