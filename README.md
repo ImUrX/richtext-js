@@ -14,21 +14,20 @@ src="https://img.shields.io/github/license/ImUrX/richtext-js?style=for-the-badge
    <a href="https://github.com/ImUrX/richtext-js/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/ImUrX/richtext-js?label=Last%20release&style=for-the-badge"></a>-->
 </p>
 
-# 💥 Text RTF - Textmesh pro **R**ich **T**ext **F**iddler 💥
-Si no te gusta el nombre, inventate uno cagada.
+# RTF - Textmesh pro **R**ich **T**ext **F**iddler
 
 ## What does it do 
 
 It is a tool that allows you to preview any rich text, useful for SCP:SL owners or programmers (or any other game that uses Rich Text).
 
-## 🎁 Features
+## Features
 - Syntax Validator
 - Text preview
-## 📝 Future features
+## Future features
 - Interface improvement
 - Possibility to copy text without doing Ctrl + c
 - copy a link to share your Rich text
 
-## 📜 Bugs
+## Bugs
 - \<size> Not displaying correctly
 - We have a lazy programmer.
