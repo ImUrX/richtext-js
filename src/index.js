@@ -33,13 +33,13 @@ window.onload = () => {
 
     const updateDarkMode = ev => {
         view.dispatch({
-            effects: theme.reconfigure(theme.of(EditorView.theme({
+            effects: theme.reconfigure(EditorView.theme({
                 "&": {
                     height: "40vh",
                     backgroundColor: ev.matches ? "#24292e" : "inherit"
                 },
                 ".cm-scroller": {overflow: "auto"}
-            }, { dark: ev.matches })))
+            }, { dark: ev.matches }))
         });
     };
     if(darkmode.addEventListener) {
@@ -88,6 +88,15 @@ window.onload = () => {
                     return `<div style="margin-left: ${attr}">`;
                 }
                 return escapeHTML(match);
+            case "size":
+                if(!isNaN(attr) && attr.match(/^(-|\+)/)) { //relative size
+                    const defaultSize = getComputedStyle(document.documentElement).getPropertyValue("--fontsize");
+                    const num = parseFloat(attr) + parseFloat(defaultSize.replace(/[^-\d.]/g, ""));
+                    return `<span style="font-size: ${num}${defaultSize.replace(/[-\d.]/g, "")}">`;
+                } else if(checkUnits(["px", "em", "%"], attr)) {
+                    return `<span style="font size: ${attr}">`;
+                }
+                return escapeHTML(match);
             case "u":
             case "b":
             case "i":
@@ -107,6 +116,7 @@ window.onload = () => {
             case "smallcaps":
             case "align":
             case "cspace":
+            case "size":
                 return  "</span>";
             case "indent":
                 return "</div>";

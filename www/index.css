@@ -1,9 +1,9 @@
-.text-error { 
-    text-decoration: red wavy underline;
+:root {
+    --fontsize: 14px; /* dont know size on SL */
 }
 
-.text-warning { 
-    text-decoration: orange wavy underline;
+body {
+    font-size: var(--fontsize);
 }
 
 @media (prefers-color-scheme: dark) {
