@@ -29,5 +29,5 @@ It is a tool that allows you to preview any rich text, useful for SCP:SL owners 
 - copy a link to share your Rich text
 
 ## Bugs
-- \<size> Not displaying correctly
+- \<link> Not displaying correctly
 - We have a lazy programmer.
