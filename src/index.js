@@ -7,6 +7,16 @@ const theme = new Compartment();
 
 const supportedColors = ["black", "blue", "green", "orange", "purple", "red", "white", "yellow"];
 
+let lookbehind = true;
+
+try {
+    lookbehind = new RegExp("<([\\w-]+)(?:=\"?([\\w#%+.-]+|(?<=\")[^>\\n]+(?=\"))\"?)?>", "g");
+} catch(e) {
+    if(e instanceof SyntaxError) {
+        lookbehind = new RegExp("<([\\w-]+)(?:=\"?([\\w#%+.-]+|[^>\\n]+(?=\"))\"?)?>", "g");
+    }
+}
+
 window.onload = () => {
     /**
      * @type {HTMLDivElement}
@@ -51,12 +61,11 @@ window.onload = () => {
 
     lintButton.addEventListener("click", () => {
         console.log([...view.state.doc]);
-        const lines = [...view.state.doc].join("").replaceAll(/<noparse>(.+)<\/noparse>/g, (match, name) => {
+        const lines = [...view.state.doc].join("").replace(/&/g, "&amp;").replaceAll(/<noparse>(.+)<\/noparse>/g, (match, name) => {
             return escapeHTML(name);
-        }).replace(/&/g, "&amp;").replaceAll(/<([\w-]+)(?:=(?:"|')?([\w#%+-]+)(?:"|')?)?>/g, (match, name, attr) => {
+        }).replaceAll(lookbehind, (match, name, attr) => {
             switch(name) {
             case "color": {
-
                 if(!attr || !(supportedColors.includes(attr) 
                 || ((attr.length === 7 || attr.length === 9) && attr.startsWith("#") && !isNaN(parseInt(attr.substring(1), 16))))
                 ) { //ugly
@@ -83,9 +92,20 @@ window.onload = () => {
                     return `<span style="letter-spacing: ${attr}">`;
                 }
                 return escapeHTML(match);
+            case "margin-left":
             case "indent":
                 if(checkUnits(["px", "em", "%"], attr)) {
                     return `<div style="margin-left: ${attr}">`;
+                }
+                return escapeHTML(match);
+            case "margin-right":
+                if(checkUnits(["px", "em", "%"], attr)) {
+                    return `<div style="margin-right: ${attr}">`;
+                }
+                return escapeHTML(match);
+            case "margin":
+                if(checkUnits(["px", "em", "%"], attr)) {
+                    return `<div style="margin-right: ${attr}; margin-left: ${attr}">`;
                 }
                 return escapeHTML(match);
             case "size":
@@ -119,6 +139,9 @@ window.onload = () => {
             case "size":
                 return  "</span>";
             case "indent":
+            case "margin":
+            case "margin-left":
+            case "margin-right":
                 return "</div>";
             case "b":
             case "i":
