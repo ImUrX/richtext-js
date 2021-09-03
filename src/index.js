@@ -89,10 +89,10 @@ window.onload = () => {
                 }
                 return escapeHTML(match);
             case "size":
-                if(!isNaN(attr) && attr.match(/^(-|\+)/)) { //relative size
-                    const defaultSize = getComputedStyle(document.documentElement).getPropertyValue("--fontsize");
-                    const num = parseFloat(attr) + parseFloat(defaultSize.replace(/[^-\d.]/g, ""));
-                    return `<span style="font-size: ${num}${defaultSize.replace(/[-\d.]/g, "")}">`;
+                if(!isNaN(attr)) { //apparently relative size doesnt work in scp:sl
+                    //const defaultSize = getComputedStyle(document.documentElement).getPropertyValue("--fontsize");
+                    const num = parseFloat(attr); //+ parseFloat(defaultSize.replace(/[^-\d.]/g, ""));
+                    return `<span style="font-size: ${num}px">`;
                 } else if(checkUnits(["px", "em", "%"], attr)) {
                     return `<span style="font-size: ${attr}">`;
                 }
