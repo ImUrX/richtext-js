@@ -6,6 +6,11 @@ body {
     font-size: var(--fontsize);
 }
 
+#output {
+    max-width: 100vw;
+    word-break: normal;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #404040;

@@ -117,6 +117,13 @@ window.onload = () => {
                     return `<span style="font-size: ${attr}">`;
                 }
                 return escapeHTML(match);
+            case "mark":
+                if(attr && (attr.length === 7 || attr.length === 9) && attr.startsWith("#") && !isNaN(parseInt(attr.substring(1), 16))) {
+                    return `<mark style="background-color: ${attr}">`;
+                }
+                return escapeHTML(match);
+            case "nobr":
+                return "<span style=\"white-space: nowrap\">" + addIf(attr);
             case "u":
             case "b":
             case "i":
@@ -137,6 +144,7 @@ window.onload = () => {
             case "align":
             case "cspace":
             case "size":
+            case "nobr":
                 return  "</span>";
             case "indent":
             case "margin":
@@ -149,6 +157,7 @@ window.onload = () => {
             case "u":
             case "sub":
             case "sup":
+            case "mark":
                 return `</${name}>`;
             default:
                 return escapeHTML(match);
