@@ -1,6 +1,6 @@
 import { parser } from "./rich.js";
 import { LRLanguage, LanguageSupport, foldInside, foldNodeProp, indentNodeProp } from "@codemirror/language";
-import { styleTags, tags as t } from "@codemirror/highlight";
+import { styleTags, tags as t } from "@lezer/highlight";
 window.testings = parser;
 
 export const richLanguage = LRLanguage.define({

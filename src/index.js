@@ -31,24 +31,14 @@ window.onload = () => {
     const darkmode = matchMedia("(prefers-color-scheme: dark)");
 
     const view = new EditorView({
-        state: EditorState.create({ extensions: [basicSetup, rich(), theme.of(EditorView.theme({
-            "&": {
-                height: "40vh",
-                backgroundColor: darkmode.matches ? "#24292e" : "inherit"
-            },
-            ".cm-scroller": {overflow: "auto"}
-        }, { dark: darkmode.matches })), EditorView.lineWrapping] }),
+        state: EditorState.create({ extensions: [basicSetup, rich(), theme.of(EditorView.theme(generateTheme(darkmode), { dark: darkmode.matches })), EditorView.lineWrapping] }),
         parent: input
     });
 
     const updateDarkMode = ev => {
         view.dispatch({
             effects: theme.reconfigure(EditorView.theme({
-                "&": {
-                    height: "40vh",
-                    backgroundColor: ev.matches ? "#24292e" : "inherit"
-                },
-                ".cm-scroller": {overflow: "auto"}
+                ...generateTheme(ev),
             }, { dark: ev.matches }))
         });
     };
@@ -224,4 +214,17 @@ function escapeHTML(unsafe) {
             return "&#039;";
         }
     });
+}
+
+function generateTheme(darkmode) {
+    return {
+        "&": {
+            height: "40vh",
+            backgroundColor: darkmode.matches ? "#24292e" : "inherit"
+        },
+        ".cm-scroller": {overflow: "auto"},
+        "&.cm-focused .cm-selectionBackground, ::selection": {
+            backgroundColor: darkmode.matches ? "#074" : "#d9d9d9"
+        },
+    };
 }

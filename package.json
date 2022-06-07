@@ -19,17 +19,18 @@
   },
   "homepage": "https://github.com/ImUrX/richtext-js#readme",
   "dependencies": {
-    "@lezer/lr": "^0.15.1",
-    "express": "^4.17.1"
+    "@lezer/lr": "^1.0.0",
+    "express": "^4.18.1"
   },
   "devDependencies": {
-    "@codemirror/autocomplete": "^0.19.2",
-    "@codemirror/basic-setup": "^0.19.0",
-    "@codemirror/highlight": "^0.19.2",
-    "@codemirror/language": "^0.19.2",
-    "@lezer/generator": "^0.15.0",
-    "@rollup/plugin-node-resolve": "^13.0.4",
-    "eslint": "^7.32.0",
-    "rollup": "^2.56.2"
+    "@codemirror/autocomplete": "^0.20.3",
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/language": "^0.20.2",
+    "@codemirror/view": "^0.20.7",
+    "@lezer/generator": "^1.0.0",
+    "@lezer/highlight": "^1.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "eslint": "^8.17.0",
+    "rollup": "^2.75.6"
   }
 }
