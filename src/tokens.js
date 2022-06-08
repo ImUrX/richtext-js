@@ -26,7 +26,7 @@ function tagNameAfter(input, offset) {
     return cachedName = name || null;
 }
 
-export const optionalClose = ["pos", "voffset", "line-height"];
+export const optionalClose = ["pos", "voffset", "line-height" , "sprite"];
 
 function EntityContext(name, parent) {
     this.name = name;
