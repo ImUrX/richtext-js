@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Noto+Emoji&display=swap');
   
 :root {
     --fontsize: 14px; /* dont know size on SL */
@@ -9,9 +9,16 @@ body {
 }
 
 #output {
-    font-family: "Roboto", monospace;
+    font-size: 24px;
+    font-family: "Roboto", "Noto Emoji", monospace; 
     max-width: 100vw;
     word-break: normal;
+}
+
+#output a:hover, #output a:visited, #output a:link, #output a:active
+{
+    color: inherit;
+    text-decoration: none;
 }
 
 @media (prefers-color-scheme: dark) {

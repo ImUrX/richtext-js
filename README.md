@@ -26,7 +26,6 @@ It is a tool that allows you to preview any rich text, useful for SCP:SL owners 
 ## Future features
 - Interface improvement
 - Possibility to copy text without doing Ctrl + c
-- copy a link to share your Rich text
 
 ## Bugs
 - \<link> Not displaying correctly
