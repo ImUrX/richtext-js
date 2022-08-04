@@ -1,14 +1,6 @@
-import {
-    rich
-} from "./language.js";
-import {
-    EditorState,
-    EditorView,
-    basicSetup
-} from "@codemirror/basic-setup";
-import {
-    Compartment
-} from "@codemirror/state";
+import { rich } from "./language.js";
+import { EditorView, basicSetup } from "codemirror";
+import { Compartment, EditorState } from "@codemirror/state";
 
 
 const theme = new Compartment();
@@ -36,8 +28,6 @@ window.onload = async () => {
      */
     const lintButton = document.getElementById("lint-button");
     const output = document.getElementById("output");
-    const params = new URLSearchParams(location.search);
-
     const darkmode = matchMedia("(prefers-color-scheme: dark)");
 
     const view = new EditorView({
@@ -47,8 +37,7 @@ window.onload = async () => {
                 rich(),
                 theme.of(EditorView.theme(generateTheme(darkmode), { dark: darkmode.matches })),
                 EditorView.lineWrapping
-            ],
-            doc: params.has("b") ? await fetchPastebin(params.get("b")) : ""
+            ]
         }),
         parent: input
     });
@@ -274,8 +263,4 @@ function generateTheme(darkmode) {
             borderLeftColor: darkmode.matches ? "white" : "#444"
         }
     };
-}
-
-function fetchPastebin(code) {
-    return fetch(`https://pastebin.com/raw/${code}`).then(res => res.text()).catch(() => "");
 }
