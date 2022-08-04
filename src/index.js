@@ -17,7 +17,7 @@ try {
     }
 }
 
-window.onload = () => {
+window.onload = async () => {
     /**
      * @type {HTMLDivElement}
      */
@@ -27,11 +27,19 @@ window.onload = () => {
      */
     const lintButton = document.getElementById("lint-button");
     const output = document.getElementById("output");
+    const params = new URLSearchParams(location.search);
 
     const darkmode = matchMedia("(prefers-color-scheme: dark)");
 
     const view = new EditorView({
-        state: EditorState.create({ extensions: [basicSetup, rich(), theme.of(EditorView.theme(generateTheme(darkmode), { dark: darkmode.matches })), EditorView.lineWrapping] }),
+        state: EditorState.create({
+            extensions: [
+                basicSetup, rich(),
+                theme.of(EditorView.theme(generateTheme(darkmode), { dark: darkmode.matches })),
+                EditorView.lineWrapping
+            ],
+            doc: params.has("b") ? await fetchPastebin(params.get("b")) : ""
+        }),
         parent: input
     });
 
@@ -227,4 +235,8 @@ function generateTheme(darkmode) {
             backgroundColor: darkmode.matches ? "#074" : "#d9d9d9"
         },
     };
+}
+
+function fetchPastebin(code) {
+    return fetch(`https://pastebin.com/raw/${code}`).then(res => res.text()).catch(() => "");
 }
