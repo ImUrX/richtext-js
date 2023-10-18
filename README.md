@@ -8,8 +8,6 @@
 src="https://img.shields.io/github/license/ImUrX/richtext-js?style=for-the-badge"></a>
 <!--- # Forks counter -->
    <a href="https://github.com/ImUrX/richtext-js/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/ImUrX/richtext-js?style=for-the-badge"></a>
-<!--- # Exiled Discord Server -->
-   <a href="https://discord.gg/PyUkWTg"><img alt="Discord" src="https://img.shields.io/discord/656673194693885975?color=critical&logo=discord&logoColor=red&label=EXILED%20Discord&style=for-the-badge">
 <!--- # Latest release, includes pre-release 
    <a href="https://github.com/ImUrX/richtext-js/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/ImUrX/richtext-js?label=Last%20release&style=for-the-badge"></a>-->
 </p>
