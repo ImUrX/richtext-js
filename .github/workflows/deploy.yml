@@ -14,19 +14,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-    - uses: crazy-max/ghaction-github-pages@v2.5.0
+    - uses: crazy-max/ghaction-github-pages@v4.2.0
       with:
         build_dir: ./www/
         jekyll: false
