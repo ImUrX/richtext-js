@@ -5,7 +5,7 @@ import { Compartment, EditorState } from "@codemirror/state";
 
 const theme = new Compartment();
 
-const supportedColors = ["black", "blue", "green", "orange", "purple", "red", "white", "yellow"];
+const supportedColors = ["aqua", "cyan", "black", "blue", "brown", "darkblue", "fuchsia", "magenta",  "green", "grey", "lightblue", "lime", "maroon", "navy", "olive", "orange", "purple", "red", "silver", "teal", "white", "yellow"];
 const spriteList = ["😊", "😋", "😍", "😎", "😀", "😄", "😂", "😃", "😄", "😅", "😣", "😜", "⍰", "🤣", "🙂", "🙁"].map(x => x + "\uFE0F");
 
 let lookbehind = true;
